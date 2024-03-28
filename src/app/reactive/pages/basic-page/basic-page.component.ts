@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { ValidatorsService } from 'src/app/shared/services/validator.service';
 
 @Component({
   templateUrl: './basic-page.component.html',
@@ -13,7 +14,10 @@ export class BasicPageComponent implements OnInit {
   //   price: new FormControl(0),
   //   inStorage: new FormControl(0)
   // });
-  constructor(private fb: FormBuilder,){}
+  constructor(
+    private fb: FormBuilder,
+    private validatorService : ValidatorsService,
+    ){}
 
   ngOnInit(): void {
   }
@@ -24,9 +28,8 @@ export class BasicPageComponent implements OnInit {
     inStorage: [0, [Validators.required, Validators.min(0) ] ]
   });
 
-  isValidField( field: string): boolean | null{
-    return this.formulario.controls[field].errors
-    && this.formulario.controls[field].touched
+  isValidField( field: string){
+    return this.validatorService.isValidField(this.formulario,field);
   }
 
   getFieldError(field: string): string | null {
